@@ -1,5 +1,6 @@
 import argparse
-from Crypto.Util.number import long_to_bytes
+from math import gcd
+from Crypto.Util.number import long_to_bytes, isPrime
 
 parser = argparse.ArgumentParser(description='Max49\'s custom rsa tool lol.')
 parser.add_argument('-p', action='store', type=int)
@@ -22,6 +23,9 @@ phi = args.phi
 if not p or not q or not ct:
     raise AssertionError('Missing important values!')
 
+if not isPrime(p) or not isPrime(q):
+    raise ValueError('p and q must both be prime!')
+
 if not n:
     n = p*q
 
@@ -29,6 +33,9 @@ if p == q and not phi:
     phi = p*(p-1)
 elif not phi:
     phi = (p-1)*(q-1)
+
+if not gcd(e, phi) == 1:
+    raise ValueError('φ(n) and e must be coprime!')
 
 if not d:
     d = pow(e, -1, phi)
