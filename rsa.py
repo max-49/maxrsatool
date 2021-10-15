@@ -27,7 +27,7 @@ if n == 0:
 if p == q and phi == 0:
     phi = p*(p - 1)
 elif phi == 0:
-    phi = (p-1)(q-1)
+    phi = (p-1)*(q-1)
 
 if d == 0:
     d = pow(e, -1, phi)
