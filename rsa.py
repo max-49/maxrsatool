@@ -25,7 +25,7 @@ if n == 0:
     n = p*q
 
 if p == q and phi == 0:
-    phi = p*(p - 1)
+    phi = p*(p-1)
 elif phi == 0:
     phi = (p-1)*(q-1)
 
