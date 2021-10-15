@@ -3,13 +3,14 @@ from math import gcd
 from Crypto.Util.number import long_to_bytes, isPrime
 
 parser = argparse.ArgumentParser(description='Max49\'s custom rsa tool lol.')
-parser.add_argument('-p', action='store', type=int)
-parser.add_argument('-q', action='store', type=int)
-parser.add_argument('-n', action='store', type=int)
-parser.add_argument('-e', action='store', type=int)
-parser.add_argument('-d', action='store', type=int)
-parser.add_argument('-ct', action='store', type=int)
-parser.add_argument('-phi', action='store', type=int)
+parser.add_argument('-p', help='a prime p value', action='store', type=int, required=True)
+parser.add_argument('-q', help='a prime q value', action='store', type=int, required=True)
+parser.add_argument('-n', help='a product of p and q', action='store', type=int)
+parser.add_argument('-e', help='the public exponent', action='store', type=int)
+parser.add_argument('-d', help='the private key', action='store', type=int)
+parser.add_argument('-ct', help='the ciphertext', action='store', type=int, required=True)
+parser.add_argument('-phi', help='the euler function of n', action='store', type=int)
+parser.add_argument('--all', help='print integer, bytes, and attempted decoding of the answer', action="store_true")
 args = parser.parse_args()
 
 p = args.p
@@ -19,9 +20,6 @@ e = args.e or 65537
 d = args.d
 ct = args.ct
 phi = args.phi
-
-if not p or not q or not ct:
-    raise AssertionError('Missing important values!')
 
 if not isPrime(p) or not isPrime(q):
     raise ValueError('p and q must both be prime!')
@@ -44,3 +42,7 @@ m = pow(ct, d, n)
 
 print("----------------")
 print(f"Unciphered text: {long_to_bytes(m).decode()}")
+if args.all:
+    print(f"Unciphered bytes: {long_to_bytes(m)}")
+    print(f"Unciphered integer: {m}")
+    print(f"Unciphered hex: {hex(m)}")
